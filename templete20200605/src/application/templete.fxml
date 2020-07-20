@@ -1,0 +1,98 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.text.Font?>
+<?import javafx.scene.layout.*?>
+<?import java.lang.*?>
+
+<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="900.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="application.MainController">
+   <top>
+      <VBox BorderPane.alignment="CENTER">
+         <children>
+            <MenuBar fx:id="menu">
+              <menus>
+                <Menu mnemonicParsing="false" text="File">
+                  <items>
+                    	<MenuItem fx:id="newFile" mnemonicParsing="false" text="newFile" />
+                        <MenuItem fx:id="openFile" mnemonicParsing="false" text="openFile" />
+                        <MenuItem fx:id="save" mnemonicParsing="false" text="save" />
+                        <MenuItem fx:id="print" mnemonicParsing="false" text="print" />
+                        <MenuItem fx:id="newWindow" mnemonicParsing="false" text="newWindow" />
+                  </items>    
+                </Menu>
+                <Menu mnemonicParsing="false" text="Edit">
+                  <items>
+                    <MenuItem mnemonicParsing="false" text="Delete" />
+                  </items>
+                </Menu>
+                <Menu mnemonicParsing="false" text="Help">
+                  <items>
+                    <MenuItem mnemonicParsing="false" text="About" />
+                  </items>
+                </Menu>
+              </menus>
+            </MenuBar>
+            <Accordion>
+              <panes>
+                <TitledPane animated="false" text="menu">
+                  <content>
+                        <ToolBar prefHeight="40.0" prefWidth="200.0">
+                          <items>
+                            <Button mnemonicParsing="false" text="Button" />
+                          </items>
+                        </ToolBar>
+                  </content>
+                </TitledPane>
+              </panes>
+            </Accordion>
+            <ToolBar>
+               <items>
+                  <Button fx:id="loadbtn" mnemonicParsing="false" prefHeight="23.0" prefWidth="151.0" text="load Folder" />
+                  <TextField fx:id="txtMsg" prefHeight="23.0" prefWidth="57.0" />
+                  <Button fx:id="btnAlert" mnemonicParsing="false" onAction="#clickHandler" prefHeight="23.0" prefWidth="57.0" text="Alert" />
+                  <Region prefHeight="27.0" prefWidth="14.0" />
+                  <Label text="text">
+                     <font>
+                        <Font size="13.0" />
+                     </font>
+                     <padding>
+                        <Insets top="2.0" />
+                     </padding>
+                  </Label>
+                  <!--ChoiceBox accessibleText="글씨체" prefHeight="23.0" prefWidth="80.0"-->
+                  <ComboBox prefHeight="23.0" prefWidth="80.0" />
+                  <ComboBox prefHeight="23.0" prefWidth="50.0" />
+                  <Button mnemonicParsing="false" prefHeight="23.0" prefWidth="20.0" text="Button" />
+                  <Button mnemonicParsing="false" prefHeight="23.0" prefWidth="20.0" text="Button" />
+                  <Button mnemonicParsing="false" prefHeight="23.0" prefWidth="20.0" text="Button" />
+                  <Region prefHeight="27.0" prefWidth="59.0" />
+                  <Button mnemonicParsing="false" text="Button" />
+                  <Button mnemonicParsing="false" text="Button" />
+               </items>
+            </ToolBar>
+         </children>
+      </VBox>
+   </top>
+   <bottom>
+      <HBox BorderPane.alignment="CENTER">
+         <children>
+            <Label text="Label" />
+         </children>
+      </HBox>
+   </bottom>
+   <center>
+      <SplitPane dividerPositions="0.16815144766146994, 0.6158129175946548" prefHeight="160.0" prefWidth="200.0">
+        <items>
+            <SplitPane orientation="VERTICAL" prefWidth="141.0">
+              <items>
+                  <TreeView fx:id="treeV" prefHeight="516.0" prefWidth="141.0" />
+              </items>
+            </SplitPane>
+            <TabPane fx:id="mainTab" prefHeight="516.0" prefWidth="185.0" tabClosingPolicy="UNAVAILABLE">
+            </TabPane>
+            <ScrollPane prefHeight="200.0" prefWidth="585.0" />
+        </items>
+      </SplitPane>
+   </center>
+</BorderPane>
