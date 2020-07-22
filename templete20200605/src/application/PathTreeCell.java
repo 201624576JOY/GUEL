@@ -1,5 +1,6 @@
 package application;
 
+import java.io.File;
 import java.io.IOException;
 import java.net.URL;
 import java.nio.file.FileAlreadyExistsException;
@@ -17,15 +18,20 @@ import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.scene.Node;
+import javafx.scene.control.Alert;
 import javafx.scene.control.ContextMenu;
 import javafx.scene.control.MenuItem;
 import javafx.scene.control.TextField;
 import javafx.scene.control.TreeCell;
 import javafx.scene.control.TreeItem;
+import javafx.scene.control.TreeView;
+import javafx.scene.control.Alert.AlertType;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
+import javafx.stage.DirectoryChooser;
+import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 import javax.imageio.ImageIO;
 import javax.imageio.ImageReader;
@@ -49,6 +55,7 @@ public class PathTreeCell extends TreeCell<PathItem>{
         expandMenu.setOnAction((ActionEvent event) -> {
             getTreeItem().setExpanded(true);
         });
+        
         MenuItem expandAllMenu = new MenuItem("Expand All");
         expandAllMenu.setOnAction(new EventHandler<ActionEvent>() {
             @Override
@@ -65,6 +72,7 @@ public class PathTreeCell extends TreeCell<PathItem>{
                     .forEach(child -> expandTreeItem(child));
             }
         });
+        
         MenuItem addMenu = new MenuItem("Add Directory");
         addMenu.setOnAction(new EventHandler<ActionEvent>() {
             @Override
@@ -94,6 +102,60 @@ public class PathTreeCell extends TreeCell<PathItem>{
                     return newDir;
             }
         });
+        //create new file(txt) 새로운 txt파일 생성
+        MenuItem addtxtfile = new MenuItem("AddTXTFile");
+        addtxtfile.setOnAction(new EventHandler<ActionEvent>() {
+        	public void handle(ActionEvent t) {
+        		Path newfile = createnewfile();
+            	if(newfile != null) {
+            		TreeItem<PathItem> addthetxtfile = PathTreeItem.createNode(new PathItem(newfile));
+            		getTreeItem().getChildren().add(addthetxtfile);
+            	}
+        	}
+        	private Path createnewfile() {
+        		 Path newtxt = null;
+                 while (true) {
+                     Path path = getTreeItem().getValue().getPath();
+                     newtxt = Paths.get(path.toAbsolutePath().toString(), "new.txt");
+                     try {
+                         Files.createFile(newtxt);
+                         break;
+                     } catch (FileAlreadyExistsException ex) {
+                         continue;
+                     } catch (IOException ex) {
+                         cancelEdit();
+                         messageProp.setValue(String.format("Creating file(%s) failed", newtxt.getFileName()));
+                         break;
+                     }
+                 }
+                     return newtxt;
+        		
+        	}
+        });
+        //파일 불러오기(하지만 지금은 막혀있음, 로컬 디렉토리에서 불러오는 것이기 때문에)
+        MenuItem addfile = new MenuItem("AddFile");
+        addfile.setOnAction(new EventHandler<ActionEvent>() {
+        	public void handle(ActionEvent t) {
+        		FileChooser filechooser = new FileChooser();
+        		filechooser.setInitialDirectory(new File(System.getProperty("user.home")));
+                File choice = filechooser.showSaveDialog(null);
+                if(choice == null || ! choice.isDirectory()) {
+                    Alert alert = new Alert(AlertType.ERROR);
+                    alert.setHeaderText("Could not open directory");
+                    alert.setContentText("The file is invalid.");
+
+                    alert.showAndWait();
+                } else {
+                	String LoadPath = choice.getPath();
+                	Path RootPath = Paths.get(LoadPath);
+                	System.out.println(RootPath);
+                	PathItem pathItem = new PathItem(RootPath);
+                	TreeItem<PathItem> addthefile = PathTreeItem.createNode(pathItem);
+            		getTreeItem().getChildren().add(addthefile);
+                }
+        	}
+        });
+        
         MenuItem deleteMenu =new MenuItem("Delete");
         deleteMenu.setOnAction((ActionEvent event) -> {
             ObjectProperty<TreeItem<PathItem>> prop = new SimpleObjectProperty<>();
@@ -111,8 +173,35 @@ public class PathTreeCell extends TreeCell<PathItem>{
                 }
             });
         });
-        dirMenu.getItems().addAll(expandMenu, expandAllMenu, deleteMenu, addMenu);
-        fileMenu.getItems().addAll(deleteMenu);
+        //현재 디렉토리에 있는 파일 이름 바꾸기(구현중)
+        MenuItem rename = new MenuItem("rename");
+        rename.setOnAction(new EventHandler<ActionEvent>() {
+        	//rename the file
+        	public void handle(ActionEvent t) {
+        		/*Path renamefile = renamethefile();
+        		if(renamefile != null) {
+        			TreeItem<PathItem> renaming = PathTreeItem.r
+        		}*/       		       		
+        	}/*
+        	private Path renamethefile() {
+        		Path refile = null;
+        		Path path = getTreeItem().getValue().getPath();
+                refile = Paths.get(path.toAbsolutePath().toString(), "rename.txt");
+                Files.
+        	}*/
+        });
+        MenuItem copy = new MenuItem("copy");
+        copy.setOnAction(new EventHandler<ActionEvent>() {
+        	public void handle(ActionEvent t) {
+        		Path copyfile  = getTreeItem().getValue().getPath();
+            	if(copyfile != null) {
+            		TreeItem<PathItem> copythefile = PathTreeItem.createNode(new PathItem(copyfile));
+            		getTreeItem().getChildren().add(copythefile);
+            	}
+        	}        	
+        });
+        dirMenu.getItems().addAll(expandMenu, expandAllMenu, addMenu, addtxtfile, addfile);
+        fileMenu.getItems().addAll(deleteMenu, rename, copy);
     }
 
     @Override

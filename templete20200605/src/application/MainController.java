@@ -85,7 +85,7 @@ public class MainController implements Initializable {
 	public MainController() {
         treeV = new TreeView<>();
         treeV.getSelectionModel().setSelectionMode(SelectionMode.SINGLE);
-        service = Executors.newFixedThreadPool(3);
+        service = Executors.newFixedThreadPool(5);
     }
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {
@@ -113,6 +113,7 @@ public class MainController implements Initializable {
                 treeV.setCellFactory((TreeView<PathItem> p) -> {
                 	final PathTreeCell cell = new PathTreeCell(messageProp);
                     setDragDropEvent(cell);
+                    //set
                     return cell;
                 });
             }
@@ -173,15 +174,14 @@ public class MainController implements Initializable {
 			
 			*/
 		});
-		//트리 아이템 두번  클릭시 -아직 구현 ㄴ
-		treeV.setOnMousePressed(new EventHandler<MouseEvent>()
+		//트리 아이템 두번  클릭시
+		treeV.setOnMouseClicked(new EventHandler<MouseEvent>()
 		{
 		    @Override
 		    public void handle(MouseEvent mouseEvent)
 		    {            
-		        if(mouseEvent.getClickCount() == 2)
-		        {
-		            TreeItem<PathItem> item = treeV.getSelectionModel().getSelectedItem();
+		        if(mouseEvent.getClickCount() == 2){
+		        	TreeItem<PathItem> item = treeV.getSelectionModel().getSelectedItem();
 		            String clickpath = getTreePath(item);
 		            System.out.println("Selected Text : " + clickpath);
 		            openNewTab(clickpath); 
