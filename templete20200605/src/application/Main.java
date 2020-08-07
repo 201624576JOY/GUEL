@@ -6,8 +6,7 @@ import javafx.stage.Stage;
 import javafx.scene.Scene;
 import javafx.scene.layout.BorderPane;
 
-//git 呪舛 test by lee
-//git rebase test by lee
+//ぞぞぞぞぞぞぞぞぞぞぞぞ
 public class Main extends Application {
 	@Override
 	public void start(Stage primaryStage) {
